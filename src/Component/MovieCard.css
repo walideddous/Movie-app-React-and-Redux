@@ -1,0 +1,40 @@
+*{
+    margin: 0px;
+}
+.buttonadd{
+    height: 100%;
+}
+
+.plus{
+    height: 210px;
+    width: 150px;
+    font-size: 100px;
+}
+
+.filmlist{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.imageetetoile{
+    position: relative;
+}
+
+.etoile{
+    position: absolute !important;
+    top: 0px;
+    right: 0px;
+    height: 80%;
+    background-color: transparent;
+}
+.movietitle{
+    text-align: center;
+}
+.filmcarte{
+    margin: 0px 10px 5px 10px;
+    width: 150px;
+    float: left;
+}
+.filmcarte:hover{
+box-shadow: 5px 5px 5px black;
+}

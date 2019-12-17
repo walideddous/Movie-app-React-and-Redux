@@ -1,0 +1,11 @@
+.form-inline{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    }
+.form-control{
+    width: 50%;
+}
+.para{
+    margin: 0px;
+}
