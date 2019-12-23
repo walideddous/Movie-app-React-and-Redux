@@ -5,6 +5,8 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import StarRatingComponent from 'react-star-rating-component';
+import { addnewmovie } from '../actions';
+import { connect } from 'react-redux';
 
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +23,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MovieCard(props) {
+const mapStateToProps = (state) =>{
+  return {
+    films: state.films,
+    recherche : state.recherche,
+    rating: state.rating
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return {
+    addnewmovie : newMovie =>dispatch(addnewmovie(newMovie))
+  }
+}
+
+const ConnectedMovieCard =(props)=> {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [newMovie,setNewMovie]=React.useState({})
@@ -45,80 +61,93 @@ export default function MovieCard(props) {
   };
 
   return (
-  <div className="listcontent">
-    <div className="filmlist">
-    {props.films.map((el, i) => (
-      <div className="filmcarte" key={i}>
-        <div className="imageetetoile">
-          <img
-            src={el.imagesource}
-            style={{ width: "100%" }}
-          />
-          <StarRatingComponent
-            className="etoile"
-            name="rate1"
-            starCount={5}
-            value={el.rating}
-          />
+    <div className="listcontent">
+      <div className="filmlist">
+        {props.films
+          .filter(
+            m =>
+              m.rating >= props.rating &&
+              m.filmtitle.toLowerCase().includes(props.recherche.toLowerCase())
+          )
+          .map((el, i) => (
+            <div className="filmcarte" key={i}>
+              <div className="imageetetoile">
+                <img src={el.imagesource} style={{ width: "100%" }} />
+                <StarRatingComponent
+                  className="etoile"
+                  name="rate1"
+                  starCount={5}
+                  value={el.rating}
+                />
+              </div>
+              <p className="movietitle">
+                <strong>{el.filmtitle}</strong>
+              </p>
+            </div>
+          ))}
+        <div className="buttonadd">
+          <button type="button" onClick={handleOpen} className="plus">
+            +
+          </button>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500
+            }}
+          >
+            <Fade in={open}>
+              <div className={classes.paper} style={{ width: "51%" }}>
+                <h4 id="transition-modal-title">Add a new Film</h4>
+                <input
+                  id="transition-modal-description"
+                  placeholder="Add a new film title..."
+                  name="filmtitle"
+                  onChange={handleChange}
+                />
+                <input
+                  id="transition-modal-description"
+                  style={{ width: "35%" }}
+                  placeholder="Add a new image source..."
+                  name="imagesource"
+                  onChange={handleChange}
+                />
+                <input
+                  id="transition-modal-description"
+                  style={{ width: "15%" }}
+                  placeholder="Rating..."
+                  type="number"
+                  min="0"
+                  max="5"
+                  name="rating"
+                  onChange={handleChange}
+                />
+                <button
+                  className="btn btn-primary btn-sm m-2"
+                  onClick={onAddfilm}
+                >
+                  Add
+                </button>
+                <button
+                  className="btn btn-danger btn-sm m-2"
+                  onClick={handleClose}
+                >
+                  Cancel
+                </button>
+              </div>
+            </Fade>
+          </Modal>
         </div>
-        <p className="movietitle"><strong>{el.filmtitle}</strong></p>
       </div>
-    ))}
-    <div className="buttonadd">
-      <button type="button" onClick={handleOpen} className="plus">
-        +
-      </button>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper} style={{ width: "51%" }}>
-            <h4 id="transition-modal-title">Add a new Film</h4>
-            <input
-              id="transition-modal-description"
-              placeholder="Add a new film title..."
-              name="filmtitle"
-              onChange={handleChange}
-            />
-            <input
-              id="transition-modal-description"
-              style={{ width: "35%" }}
-              placeholder="Add a new image source..."
-              name="imagesource"
-              onChange={handleChange}
-            />
-            <input
-              id="transition-modal-description"
-              style={{ width: "15%" }}
-              placeholder="Rating..."
-              type="number"
-              min="0"
-              max="5"
-              name="rating"
-              onChange={handleChange}
-            />
-            <button className="btn btn-primary btn-sm m-2" onClick={onAddfilm}>
-              Add
-            </button>
-            <button className="btn btn-danger btn-sm m-2" onClick={handleClose}>
-              Cancel
-            </button>
-          </div>
-        </Fade>
-      </Modal>
     </div>
-    </div>
-  </div>
   );
 }
 
+const MovieCard = connect(mapStateToProps,mapDispatchToProps)(ConnectedMovieCard)
 
+export default MovieCard

@@ -1,8 +1,24 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import './NavBar.css';
+import { connect } from 'react-redux';
+import { onSearch,  onStarClick} from '../actions';
 
-export default function NavBar (props) {
+const mapStateToProps =( state ) =>{
+  return {
+    rating : state.rating
+  }
+}
+
+const mapDispatchToProps = ( dispatch ) =>{
+  return {
+    onSearch : value => dispatch(onSearch(value)),
+    onStarClick : value => dispatch(onStarClick(value))
+  }
+}
+
+
+const ConnectedNavBar = (props) => {
  
   const [search,setSearch]=React.useState({})
 
@@ -46,3 +62,7 @@ export default function NavBar (props) {
           </div>
         );
 }
+
+const NavBar = connect(mapStateToProps,mapDispatchToProps)(ConnectedNavBar);
+
+export default NavBar
