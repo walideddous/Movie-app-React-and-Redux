@@ -36,5 +36,18 @@
     float: left;
 }
 .filmcarte:hover{
-box-shadow: 5px 5px 5px black;
+    box-shadow: 5px 5px 5px black;
+}
+.year{
+    text-align: center;
+}
+.description{
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+}
+.editedelete{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 5px 5px;
 }

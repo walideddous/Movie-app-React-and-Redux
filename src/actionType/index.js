@@ -3,3 +3,5 @@ export const ON_STAR_CLICK='ON_STAR_CLICK';
 export const FILTER_MOVIE='FILTER_MOVIE';
 export const ON_SEARCH='ON_SEARCH';
 export const IS_LOADING='IS_LOADING';
+export const REMOVE_MOVIE="REMOVE_MOVIE";
+export const EDIT_MOVIE="EDIT_MOVIE";

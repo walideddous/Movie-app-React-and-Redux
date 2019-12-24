@@ -6,6 +6,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import StarRatingComponent from 'react-star-rating-component';
 import { addnewmovie } from '../actions';
+import { removeMovie } from '../actions';
+import { editMovie } from '../actions';
 import { connect } from 'react-redux';
 
 
@@ -33,7 +35,9 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
   return {
-    addnewmovie : newMovie =>dispatch(addnewmovie(newMovie))
+    addnewmovie : newMovie =>dispatch(addnewmovie(newMovie)),
+    removeMovie : payload => dispatch(removeMovie(payload)),
+    editMovie : payload=>dispatch(editMovie(payload))
   }
 }
 
@@ -41,6 +45,17 @@ const ConnectedMovieCard =(props)=> {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [newMovie,setNewMovie]=React.useState({})
+  const [openEdit,setOpenEdit]=React.useState(false);
+  const [editMovie,setEditMovie]=React.useState({});
+
+  const handleOpenEdit = (i)=>{
+    setOpenEdit(true)
+    setEditMovie({...editMovie, i:i})
+  }
+
+  const handleCloseEdit = ()=>{
+    setOpenEdit(false)
+  }
   
   const handleOpen = () => {
     setOpen(true);
@@ -59,6 +74,19 @@ const ConnectedMovieCard =(props)=> {
     const {name , value} = e.target;
     setNewMovie({...newMovie,[name]:value})
   };
+
+  const handleChangeEdit =(e)=>{
+    const { name , value} = e.target;
+    setEditMovie({...editMovie,[name]:value})
+    
+  }
+
+  const onEdit =()=>{
+    props.editMovie(editMovie)
+    setOpenEdit(false);
+  }
+
+
 
   return (
     <div className="listcontent">
@@ -80,9 +108,20 @@ const ConnectedMovieCard =(props)=> {
                   value={el.rating}
                 />
               </div>
-              <p className="movietitle">
+              <p className="movietitle" style={{marginBottom:"0px"}}>
                 <strong>{el.filmtitle}</strong>
               </p>
+              <p className="year" style={{marginBottom:"0px"}}>
+                <strong>{el.year}</strong>
+              </p>
+              <div className="description">
+              <input type='button' value="Movie description" className="btn btn-primary" style={{fontSize : "15px"}} />
+              </div>
+              <div className="editedelete">
+              <input type='button' value="Edit" className="btn btn-secondary" onClick={()=>handleOpenEdit(i)}/>
+              <input type='button' value="delete" className="btn btn-danger" onClick={()=>props.removeMovie(i)}/>
+              </div>
+
             </div>
           ))}
         <div className="buttonadd">
@@ -119,6 +158,13 @@ const ConnectedMovieCard =(props)=> {
                 />
                 <input
                   id="transition-modal-description"
+                  style={{ width: "35%" }}
+                  placeholder="Add the year..."
+                  name="year"
+                  onChange={handleChange}
+                />
+                <input
+                  id="transition-modal-description"
                   style={{ width: "15%" }}
                   placeholder="Rating..."
                   type="number"
@@ -141,6 +187,65 @@ const ConnectedMovieCard =(props)=> {
                 </button>
               </div>
             </Fade>
+          </Modal>
+            <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={openEdit}
+            onClose={handleCloseEdit}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500
+            }}
+          >
+            <Fade in={openEdit}>
+            <div className={classes.paper} style={{ width: "51%" }}>
+              <h4 id="transition-modal-title">Add a new Film</h4>
+              <input
+                id="transition-modal-description"
+                placeholder="Edit film title..."
+                name="filmtitle"
+                onChange={handleChangeEdit}
+              />
+              <input
+                id="transition-modal-description"
+                style={{ width: "35%" }}
+                placeholder="Edit image source..."
+                name="imagesource"
+                onChange={handleChangeEdit}
+              />
+              <input
+                id="transition-modal-description"
+                style={{ width: "35%" }}
+                placeholder="Edit the year..."
+                name="year"
+                onChange={handleChangeEdit}
+              />
+              <input
+                id="transition-modal-description"
+                style={{ width: "15%" }}
+                placeholder="Rating..."
+                type="number"
+                min="0"
+                max="5"
+                name="rating"
+                onChange={handleChangeEdit}
+              />
+              <button
+                className="btn btn-primary btn-sm m-2" onClick={onEdit}
+              >
+                Edit
+              </button>
+              <button
+                className="btn btn-danger btn-sm m-2"
+                onClick={handleCloseEdit}
+              >
+                Cancel
+              </button>
+            </div>
+          </Fade>
           </Modal>
         </div>
       </div>
