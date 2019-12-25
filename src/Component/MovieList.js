@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './MovieList.css';
 import MovieCard from './MovieCard';
+import { BrowserRouter } from 'react-router-dom';
 
 
 class MovieList extends Component {
@@ -8,9 +9,11 @@ class MovieList extends Component {
     render (){
           return ( 
             <React.Fragment>
+            <BrowserRouter>
             <form className="Filmlist" >
             <MovieCard  />
             </form>
+            </BrowserRouter>
             </React.Fragment>
          );
         }

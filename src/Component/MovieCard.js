@@ -9,6 +9,7 @@ import { addnewmovie } from '../actions';
 import { removeMovie } from '../actions';
 import { editMovie } from '../actions';
 import { connect } from 'react-redux';
+import { Link, Route, Switch } from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -86,7 +87,49 @@ const ConnectedMovieCard =(props)=> {
     setOpenEdit(false);
   }
 
+const DescJocker =()=>(
+  <div>
+  <h3>SYNOPSIS ET DÉTAILS</h3>
+  <h6>Interdit aux moins de 12 ans avec avertissement</h6>
+  <p>Le film, qui relate une histoire originale inédite sur grand écran, se focalise sur la figure emblématique de l’ennemi juré de Batman. Il brosse le portrait d’Arthur Fleck, un homme sans concession méprisé par la société. </p>
+  <div style={{display:"flex",justifyContent:"center"}}><Link to="/"><button className="btn btn-danger">Home page</button></Link></div>
+  </div>
+)
 
+const DescBreakingBad =()=>(
+  <div>
+  <h3>SYNOPSIS ET DÉTAILS</h3>
+  <h6>Interdit aux moins de 12 ans avec avertissement</h6>
+  <p>Après avoir été libéré par Walter White du repaire du gang de Jack où il était séquestré dans l'épisode concluant la série Breaking Bad, Jesse Pinkman doit se réconcilier avec son passé pour pouvoir prétendre à un avenir plus radieux, alors qu'il se trouve traqué par les forces de l'ordre2.</p>
+  <div style={{display:"flex",justifyContent:"center"}}><Link to="/"><button className="btn btn-danger">Home page</button></Link></div>
+  </div>
+ )
+
+ const DescDragon = ()=>(
+  <div>
+  <h3>SYNOPSIS ET DÉTAILS</h3>
+  <p>Dragons 2 (How to Train Your Dragon 2) est un film d'animation américain réalisé par Dean DeBlois sorti en 2014. Ce film est la suite de Dragons, sorti en 2010 et est suivi par Dragons 3 en 2019.</p>
+  <div style={{display:"flex",justifyContent:"center"}}><Link to="/"><button className="btn btn-danger">Home page</button></Link></div>
+  </div> 
+ )
+ 
+ const DescFast =()=>(
+  <div>
+  <h3>SYNOPSIS ET DÉTAILS</h3>
+  <h6>Interdit aux moins de 12 ans avec avertissement</h6>
+  <p>Dom et Letty sont maintenant en lune de miel à Cuba, Brian et Mia se sont rangés et ont accueilli une petite fille, et le reste de l'équipe est disculpé. Cependant, une nouvelle menace pèse à présent sur le groupe : une femme, une mystérieuse et redoutable cyberterroriste, force Dom à la rejoindre sur le chemin de la criminalité. Pour mettre fin aux agissements de Cipher et de Dom, l'équipe est obligée de collaborer avec un ancien ennemi qu'ils ne voulaient plus croiser : Deckard Shaw.</p>
+  <div style={{display:"flex",justifyContent:"center"}}><Link to="/"><button className="btn btn-danger">Home page</button></Link></div>
+  </div> 
+ )
+
+ const DescIron =()=>(
+  <div>
+  <h3>SYNOPSIS ET DÉTAILS</h3>
+  <h6>A partir de 10 ans</h6>
+  <p>Tony Stark, inventeur de génie, vendeur d'armes et playboy milliardaire, est kidnappé en Aghanistan. Forcé par ses ravisseurs de fabriquer une arme redoutable, il construit en secret une armure high-tech révolutionnaire qu'il utilise pour s'échapper. Comprenant la puissance de cette armure, il décide de l'améliorer et de l'utiliser pour faire régner la justice et protéger les innocents.</p>
+  <div style={{display:"flex",justifyContent:"center"}}><Link to="/"><button className="btn btn-danger">Home page</button></Link></div>
+  </div> 
+ )
 
   return (
     <div className="listcontent">
@@ -114,16 +157,24 @@ const ConnectedMovieCard =(props)=> {
               <p className="year" style={{marginBottom:"0px"}}>
                 <strong>{el.year}</strong>
               </p>
-              <div className="description">
-              <input type='button' value="Movie description" className="btn btn-primary" style={{fontSize : "15px"}} />
+              <div className="description">           
+              <button  className="btn btn-primary" style={{fontSize : "15px"}} >
+              <Link to={el.filmtitle} style={{color:"white"}}>Movie description</Link>
+              </button>
               </div>
               <div className="editedelete">
               <input type='button' value="Edit" className="btn btn-secondary" onClick={()=>handleOpenEdit(i)}/>
               <input type='button' value="delete" className="btn btn-danger" onClick={()=>props.removeMovie(i)}/>
               </div>
-
             </div>
           ))}
+          <Switch>
+          <Route exact path='Jocker' component={DescJocker}/>
+          <Route exact path='Breaking bad' component={DescBreakingBad}/>
+          <Route exact path='Dragon' component={DescDragon}/>
+          <Route exact path='Fast and furious 8' component={DescFast}/>
+          <Route exact path='Iron man' component={DescIron}/>
+          </Switch>
         <div className="buttonadd">
           <button type="button" onClick={handleOpen} className="plus">
             +
